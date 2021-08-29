@@ -27,7 +27,7 @@ app.get("/api/hello", function (req, res) {
 
 app.get("/api/:date?", (req, res) => {
   var dateString = "";
-  if(req.params.date == null || req.params.date.length() == 0) {
+  if(req.params.date == null || req.params.date == "") {
     var d = new Date();
     dateString = d.toString();
   } else
