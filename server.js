@@ -26,16 +26,20 @@ app.get("/api/hello", function (req, res) {
 
 
 app.get("/api/:date?", (req, res) => {
-  let dateString = req.params.date;
-
+  var dateString = "";
+  if(req.params.date == null || req.params.date.length() == 0) {
+    var d = new Date();
+    dateString = d.toString();
+  } else
+      dateString = req.params.date;
   //A 4 digit number is a valid ISO-8601 for the beginning of that year
   //5 digits or more must be a unix time, until we reach a year 10,000 problem
   if (/\d{5,}/.test(dateString)) {
     let dateInt = parseInt(dateString);
     //Date regards numbers as unix timestamps, strings are processed differently
-    res.json({ unix: dateInt.valueOf(), utc: new Date(dateInt).toUTCString() });    
+    res.json({ unix: dateInt.valueOf(), utc: new Date(dateInt).toUTCString() });
   } else {
-    let dateObject = ((dateString == null || dateString.length() == 0) ? new Date(): new Date(dateString));
+    let dateObject = new Date(dateString);
 
     if (dateObject.toString() === "Invalid Date") {
       res.json({ error: "Invalid Date" });
